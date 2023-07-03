@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Registration Confirmation</title>
+</head>
+
+<body>
+
+	<h2>Registered successfully!</h2>
+
+	<!-- Accessing admin information from session -->
+	<div th:with="adminInfo=${session.admin}">
+		<p>Admin Name: <span th:text="${adminInfo.firstName} + ' ' + ${adminInfo.lastName}"></span></p>
+		<p>Username: <span th:text="${adminInfo.userName}"></span></p>
+	</div>
+
+	<a th:href="@{/login}">Login with new user name</a>
+	
+</body>
+
+</html>
