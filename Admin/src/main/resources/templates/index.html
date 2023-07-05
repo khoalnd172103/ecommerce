@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Index</title>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragment :: header">
+
 </head>
 <body>
 
-<h3>Login successfully</h3>
+<h3>Welcome</h3>
+
+<ul th:replace="fragment :: nav"></ul>
 
 </body>
 </html>

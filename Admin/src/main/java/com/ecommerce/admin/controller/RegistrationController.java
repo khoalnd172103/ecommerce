@@ -40,6 +40,7 @@ public class RegistrationController {
     public String registerForm(Model theModel) {
 
         theModel.addAttribute("adminDTO", new AdminDTO());
+        theModel.addAttribute("title", "Register Page");
 
         return "register";
     }
@@ -93,6 +94,7 @@ public class RegistrationController {
         // place user in the web http session for later use
         session.setAttribute("admin", adminDTO);
 
+        theModel.addAttribute("title", "Registration Confirmation Page");
         return "registration-confirmation";
     }
 }

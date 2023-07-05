@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragment :: header">
+
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <ul th:replace="fragment :: nav"></ul>
+        </div>
+
+        <div class="col-md-8">
+            <h1>Update Category</h1>
+
+            <form th:action="@{/update-category}" method="PUT" th:object="${category}">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5">Update Category</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <input type="hidden" th:field="*{id}">
+                                <div class="mb-3">
+                                    <label class="col-form-label">Name:</label>
+                                    <input type="text" class="form-control" th:field="*{name}">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div th:if="${success}" class="text-center alert alert-success">
+                <p th:text="${success}"></p>
+            </div>
+
+            <div th:if="${fail}" class="text-center alert alert-danger">
+                <p th:text="${fail}"></p>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
