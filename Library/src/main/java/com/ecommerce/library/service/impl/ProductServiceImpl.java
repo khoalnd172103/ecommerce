@@ -1,19 +1,18 @@
 package com.ecommerce.library.service.impl;
 
 import com.ecommerce.library.dto.ProductDTO;
-import com.ecommerce.library.model.Category;
 import com.ecommerce.library.model.Product;
 import com.ecommerce.library.repository.ProductRepository;
 import com.ecommerce.library.service.ProductService;
 import com.ecommerce.library.utils.ImageUpload;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -127,5 +126,18 @@ public class ProductServiceImpl implements ProductService {
         product.setActivated(true);
 
         productRepository.save(product);
+    }
+
+    @Override
+    public Page<Product> pageProduct(int pageNo) {
+        Pageable pageable = PageRequest.of(pageNo, 5);
+        return productRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Product> searchProduct(int pageNo, String keyword) {
+        Pageable pageable = PageRequest.of(pageNo, 5);
+        Page<Product> result = productRepository.searchProduct(keyword, pageable);
+        return result;
     }
 }

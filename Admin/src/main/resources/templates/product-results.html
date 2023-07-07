@@ -27,13 +27,15 @@
                     <div class="modal-content">
                         <div class="modal-body">
                             <form>
-                                <div class="mb-3">
-                                    <input type="text" name="keyword" placeholder="What do you want to search ?" class="form-control">
+                                <div class="mb-3 row">
+                                    <div class="col-10">
+                                        <input type="text" name="keyword" placeholder="What do you want to search ?" class="form-control">
+                                    </div>
+                                    <div class="col-2">
+                                        <button type="submit" class="btn btn-primary">Search</button>
+                                    </div>
                                 </div>
                             </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Search</button>
                         </div>
                     </div>
                 </div>
@@ -46,6 +48,42 @@
             <div th:if="${fail}" class="text-center alert alert-danger">
                 <p th:text="${fail}"></p>
             </div>
+
+            <script>
+                const myModal = new bootstrap.Modal(document.getElementById('myModal'), options);
+
+
+
+            </script>
+
+            <!-- Begin Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="recipient-name" class="col-form-label">Recipient:</label>
+                                    <input type="text" class="form-control" id="recipient-name">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="message-text" class="col-form-label">Message:</label>
+                                    <textarea class="form-control" id="message-text"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary">Send message</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Modal -->
 
             <table class="table table-bordered table-striped" th:if="${size > 0}">
                 <thead class="table-dark">

@@ -7,12 +7,10 @@ import com.ecommerce.library.service.CategoryService;
 import com.ecommerce.library.service.ProductService;
 import com.ecommerce.library.utils.ImageUpload;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -42,6 +40,37 @@ public class ProductController {
         model.addAttribute("size", productDTOList.size());
         model.addAttribute("title", "Product");
         return "products";
+    }
+
+    @GetMapping("/products/{pageNo}")
+    public String productsPage(@PathVariable("pageNo") int pageNo, Model model) {
+        Page<Product> products = productService.pageProduct(pageNo);
+
+        List<Product> productList = products.getContent();
+
+        model.addAttribute("title", "Manage Product");
+        model.addAttribute("size", products.getTotalElements());
+        model.addAttribute("totalPages", products.getTotalPages());
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("products", productList);
+        return "products";
+    }
+
+    @GetMapping("/search-result/{pageNo}")
+    public String searchProduct(@PathVariable("pageNo") int pageNo,
+                                @RequestParam("keyword") String keyword,
+                                Model model) {
+        Page<Product> products = productService.searchProduct(pageNo, keyword);
+
+        List<Product> result = products.getContent();
+
+        model.addAttribute("title", "Search Result");
+        model.addAttribute("size", products.getTotalElements());
+        model.addAttribute("totalPages", products.getTotalPages());
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("products", result);
+
+        return "product-results";
     }
 
     @GetMapping("/productAddForm")
