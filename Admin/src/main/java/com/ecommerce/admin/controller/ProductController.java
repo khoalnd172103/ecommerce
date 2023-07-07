@@ -48,6 +48,12 @@ public class ProductController {
 
         List<Product> productList = products.getContent();
 
+        Product product = new Product();
+        List<Category> categories = categoryService.findAllByIsActivated();
+
+        model.addAttribute("categories", categories);
+        model.addAttribute("product", product);
+
         model.addAttribute("title", "Manage Product");
         model.addAttribute("size", products.getTotalElements());
         model.addAttribute("totalPages", products.getTotalPages());
@@ -100,6 +106,7 @@ public class ProductController {
     @PostMapping("/add-product")
     public String addProduct(@ModelAttribute("productNew") Product product,
                              @RequestParam("file") MultipartFile multipartFile,
+                             Model model,
                              RedirectAttributes attributes) {
         try {
             String fileName = ImageUpload.handleFileUpload(multipartFile);
@@ -116,21 +123,23 @@ public class ProductController {
             attributes.addFlashAttribute("fail", "Error server");
         }
 
-        return "redirect:/products";
+        return "redirect:/products/" + 0;
     }
 
     @PostMapping("/update-product")
     public String updateProduct(
             @RequestParam("file") MultipartFile multipartFile,
-            @ModelAttribute("product") Product product
-            //@RequestParam("productId") Long productId
+            @ModelAttribute("product") Product product,
+            RedirectAttributes attributes
     ) throws IOException {
 
         Product saveProduct = productService.update(multipartFile, product);
 
         System.out.println(saveProduct);
 
-        return "redirect:/products";
+        attributes.addFlashAttribute("success", "Updated successfully");
+
+        return "redirect:/products/" + 0;
     }
 
     @GetMapping("/deleteProduct")
@@ -139,7 +148,7 @@ public class ProductController {
 
         attributes.addFlashAttribute("success", "Deleted successfully");
 
-        return "redirect:/products";
+        return "redirect:/products/" + 0;
     }
 
     @GetMapping("/enableProduct")
@@ -148,7 +157,7 @@ public class ProductController {
 
         attributes.addFlashAttribute("success", "Enabled successfully");
 
-        return "redirect:/products";
+        return "redirect:/products/" + 0;
     }
 
 }

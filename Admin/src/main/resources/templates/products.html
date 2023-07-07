@@ -17,10 +17,67 @@
                 <p>No products</p>
             </div>
 
-            <a th:href="@{/productAddForm}"
-               class="btn btn-primary btn-sm mb-3">
-                Add product
-            </a>
+<!--            <a th:href="@{/productAddForm}"-->
+<!--               class="btn btn-primary btn-sm mb-3">-->
+<!--                Add product-->
+<!--            </a>-->
+
+            <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addModal"
+                    data-bs-whatever="@mdo">Add product
+            </button>
+
+            <!-- Begin Add Modal -->
+            <form th:action="@{/add-product}" method="POST" enctype="multipart/form-data"  class="mb-3" th:object="${product}">
+                <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="addModalLabel">New Product</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="mb-3">
+                                        <label class="col-form-label">Name:</label>
+                                        <input type="text" class="form-control" th:field="*{name}" name="name">
+                                    </div>
+                                    <div class="mb-3">
+                                        <select class="form-select" aria-label="Category" name="categories" th:field="*{category}">
+                                            <option th:each="category : ${categories}"
+                                                    th:value="${category.id}"
+                                                    th:text="${category.name}"
+                                            ></option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="col-form-label">Description:</label>
+                                        <input type="text" class="form-control" th:field="*{description}" name="description">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="col-form-label">Quantity:</label>
+                                        <input type="text" class="form-control" th:field="*{currentQuantity}" name="quantity">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="col-form-label">Price:</label>
+                                        <input type="text" class="form-control" th:field="*{costPrice}" name="price">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Image</label>
+                                        <input type="file" name="file" accept="image/png, image/jpeg"/>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <!-- End Add Modal -->
 
             <form th:action="@{/search-result/0}" enctype="multipart/form-data" method="GET" class="mb-3">
                 <div class="modal-dialog">
@@ -118,7 +175,9 @@
             </nav>
         </div>
     </div>
-
 </div>
+
+<div th:replace="fragment :: script"></div>
+
 </body>
 </html>

@@ -93,4 +93,16 @@ public class CategoryController {
 
         return "redirect:/categories";
     }
+
+
+    @GetMapping("/showModal")
+    public String showModal(Model model) {
+        Category myObject = new Category();
+        // Set the properties of the object
+        myObject.setName("Value 1");
+
+        model.addAttribute("myObject", myObject);
+        return "index";
+    }
+
 }
