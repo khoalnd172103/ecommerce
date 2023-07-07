@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragment :: header">
+
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <ul th:replace="fragment :: nav"></ul>
+        </div>
+
+        <div class="col-md-8">
+            <form th:action="@{/update-product}" enctype="multipart/form-data" method="POST" th:object="${product}">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <form>
+                                <input type="hidden" th:field="*{id}" name="productId">
+                                <div class="mb-3">
+                                    <label class="col-form-label">Name:</label>
+                                    <input type="text" class="form-control" th:field="*{name}" name="name">
+                                </div>
+                                <div class="mb-3">
+                                    <select class="form-select" aria-label="Category" name="categories" th:field="*{category}">
+                                        <option th:each="category : ${categories}"
+                                                th:value="${category.id}"
+                                                th:text="${category.name}"
+                                        ></option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="col-form-label">Description:</label>
+                                    <input type="text" class="form-control" th:field="*{description}" name="description">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="col-form-label">Quantity:</label>
+                                    <input type="text" class="form-control" th:field="*{currentQuantity}" name="quantity">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="col-form-label">Price:</label>
+                                    <input type="text" class="form-control" th:field="*{costPrice}" name="price">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Image</label>
+                                    <img th:src="@{/image-product/{fileName}(fileName=${product.image})}" style="height: 80px; width: 80px;"/>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="file" name="file" accept="image/png, image/jpeg"/>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div th:if="${success}" class="text-center alert alert-success">
+                <p th:text="${success}"></p>
+            </div>
+
+            <div th:if="${fail}" class="text-center alert alert-danger">
+                <p th:text="${fail}"></p>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

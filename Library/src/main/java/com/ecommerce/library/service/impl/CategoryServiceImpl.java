@@ -50,7 +50,7 @@ public class CategoryServiceImpl implements CategoryService {
     public Category update(Category category) {
         Category categoryUpdate = categoryRepository.findById(category.getId()).get();
         categoryUpdate.setName(category.getName());
-        categoryUpdate.setActivated(category.isActivated());
+        categoryUpdate.setActivated(true);
         categoryUpdate.setDeleted(category.isDeleted());
 
         return categoryRepository.save(categoryUpdate);
@@ -88,5 +88,10 @@ public class CategoryServiceImpl implements CategoryService {
         category.setActivated(true);
 
         categoryRepository.save(category);
+    }
+
+    @Override
+    public List<Category> findAllByIsActivated() {
+        return categoryRepository.findAllByIsActivatedTrue();
     }
 }

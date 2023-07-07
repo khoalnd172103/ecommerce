@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @NoArgsConstructor
@@ -17,7 +18,7 @@ public class Product {
     @Column(name = "product_id")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", columnDefinition = "NVARCHAR(100)")
     private String name;
 
     @Column(name = "description")
@@ -33,8 +34,8 @@ public class Product {
     private int currentQuantity;
 
     @Lob
-    @Column(columnDefinition = "VARBINARY(MAX)")
-    private byte[] image;
+    @Column(name = "image")
+    private String image;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id", referencedColumnName = "category_id")
@@ -45,4 +46,11 @@ public class Product {
 
     @Column(name = "is_activated")
     private boolean isActivated;
+
+    @Transient
+    public String getPhotosImagePath() {
+        if (image == null || id == null) return null;
+
+        return "/image-product/" + id + "/" + image;
+    }
 }
