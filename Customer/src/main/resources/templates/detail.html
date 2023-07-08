@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragment :: header"></head>
+<body>
+
+<div th:replace="fragment :: navigation"></div>
+
+<!-- Product section-->
+<section class="py-4">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="mb-5">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/index}">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <a th:href="@{/product-category(categoryId=${product.category.id})}" th:text="${product.category.name}"></a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page" th:text="${product.name}"></li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="row gx-4 gx-lg-5 align-items-center" th:object="${product}">
+            <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0"
+                                       th:src="@{/image-product/{fileName}(fileName=${product.image})}" alt="..."/></div>
+            <div class="col-md-6">
+<!--                <div class="small mb-1">SKU: BST-498</div>-->
+                <h1 class="display-5 fw-bolder" th:text="${product.name}">Shop item template</h1>
+                <div class="fs-5 mb-5">
+                    <span class="text-decoration-line-through">$45.00</span>
+                    <span th:text="${product.costPrice}"></span>
+                </div>
+                <p class="lead" th:text="${product.description}"></p>
+                <div class="d-flex">
+                    <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1"
+                           style="max-width: 3rem"/>
+                    <button class="btn btn-outline-dark flex-shrink-0" type="button">
+                        <i class="bi-cart-fill me-1"></i>
+                        Add to cart
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div th:replace="fragment :: footer"></div>
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+
+</body>
+</html>

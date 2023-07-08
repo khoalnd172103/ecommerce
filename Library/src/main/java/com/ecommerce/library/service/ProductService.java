@@ -1,6 +1,7 @@
 package com.ecommerce.library.service;
 
 import com.ecommerce.library.dto.ProductDTO;
+import com.ecommerce.library.model.Category;
 import com.ecommerce.library.model.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,4 +20,8 @@ public interface ProductService {
     Page<Product> pageProduct(int pageNo);
 
     Page<Product> searchProduct(int pageNo, String keyword);
+
+    List<Product> findAllByIsActivated();
+
+    List<Product> findAllByCategoryId(Long categoryId);
 }

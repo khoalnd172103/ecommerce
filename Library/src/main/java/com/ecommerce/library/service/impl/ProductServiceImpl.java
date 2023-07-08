@@ -140,4 +140,14 @@ public class ProductServiceImpl implements ProductService {
         Page<Product> result = productRepository.searchProduct(keyword, pageable);
         return result;
     }
+
+    @Override
+    public List<Product> findAllByIsActivated() {
+        return productRepository.findAllByIsActivatedTrue();
+    }
+
+    @Override
+    public List<Product> findAllByCategoryId(Long categoryId) {
+        return productRepository.findAllByCategoryId(categoryId);
+    }
 }
