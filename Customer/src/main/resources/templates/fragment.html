@@ -15,7 +15,7 @@
 <div th:fragment="navigation">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container px-4 px-lg-5">
-            <a class="navbar-brand" href="#!">Ray Shop</a>
+            <a class="navbar-brand" th:href="@{/index}">Ray Shop</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
@@ -23,7 +23,8 @@
             <div class="collapse navbar-collapse row" id="navbarSupportedContent">
                 <div class="col-md-4">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/index}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/index}">Home</a>
+                        </li>
                         <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
@@ -41,7 +42,8 @@
                 </div>
                 <div class="col-md-6">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search" aria-label="+" aria-describedby="button-addon2">
+                        <input type="text" class="form-control" placeholder="Search" aria-label="+"
+                               aria-describedby="button-addon2">
                         <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
                     </div>
                 </div>
@@ -61,6 +63,25 @@
 
 <div th:fragment="banner">
     <!-- Banner-->
+<!--    <div id="carouselExample" class="carousel slide">-->
+<!--        <div class="carousel-inner">-->
+<!--            <div class="carousel-item active">-->
+<!--                <img th:src="@{/image-web/banner-1.jpg}" class="d-block w-100" alt="...">-->
+<!--            </div>-->
+<!--            <div class="carousel-item">-->
+<!--                <img th:src="@{/image-web/banner-2.jpg}" class="d-block w-100" alt="...">-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">-->
+<!--            <span class="carousel-control-prev-icon" aria-hidden="true"></span>-->
+<!--            <span class="visually-hidden">Previous</span>-->
+<!--        </button>-->
+<!--        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">-->
+<!--            <span class="carousel-control-next-icon" aria-hidden="true"></span>-->
+<!--            <span class="visually-hidden">Next</span>-->
+<!--        </button>-->
+<!--    </div>-->
+
     <div class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">

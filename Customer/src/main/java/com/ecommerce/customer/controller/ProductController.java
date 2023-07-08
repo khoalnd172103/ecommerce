@@ -44,10 +44,13 @@ public class ProductController {
     public String productDetail(@RequestParam("productId") Long id, Model model) {
         Product product = productService.findById(id);
 
+        List<Product> relatedProducts = productService.findAllByCategoryId(product.getCategory().getId());
+
         model.addAttribute("title", product.getName() + " | Ray Shop");
         model.addAttribute("product", product);
+        model.addAttribute("relatedProducts", relatedProducts);
 
-        return "detail";
+        return "product-detail";
     }
 
     @GetMapping("/product-category")

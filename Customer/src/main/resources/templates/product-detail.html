@@ -13,7 +13,8 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a th:href="@{/index}">Home</a></li>
                     <li class="breadcrumb-item active" aria-current="page">
-                        <a th:href="@{/product-category(categoryId=${product.category.id})}" th:text="${product.category.name}"></a>
+                        <a th:href="@{/product-category(categoryId=${product.category.id})}"
+                           th:text="${product.category.name}"></a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page" th:text="${product.name}"></li>
                 </ol>
@@ -22,13 +23,14 @@
 
         <div class="row gx-4 gx-lg-5 align-items-center" th:object="${product}">
             <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0"
-                                       th:src="@{/image-product/{fileName}(fileName=${product.image})}" alt="..."/></div>
+                                       th:src="@{/image-product/{fileName}(fileName=${product.image})}" alt="..."/>
+            </div>
             <div class="col-md-6">
-<!--                <div class="small mb-1">SKU: BST-498</div>-->
+                <!--                <div class="small mb-1">SKU: BST-498</div>-->
                 <h1 class="display-5 fw-bolder" th:text="${product.name}">Shop item template</h1>
                 <div class="fs-5 mb-5">
                     <span class="text-decoration-line-through">$45.00</span>
-                    <span th:text="${product.costPrice}"></span>
+                    <span th:text="'$' + ${product.costPrice}"></span>
                 </div>
                 <p class="lead" th:text="${product.description}"></p>
                 <div class="d-flex">
@@ -38,6 +40,34 @@
                         <i class="bi-cart-fill me-1"></i>
                         Add to cart
                     </button>
+                </div>
+            </div>
+        </div>
+
+        <p class="text-center fs-1 mt-5">Related Product</p>
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-4 row-cols-xl-4">
+                <div class="col mb-5" th:each="product : ${relatedProducts}">
+                    <div class="card h-100">
+                        <!-- Product image-->
+                        <img class="card-img-top img-thumbnail"
+                             th:src="@{/image-product/{fileName}(fileName=${product.image})}" alt=""/>
+                        <!-- Product details-->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder" th:text="${product.name}"></h5>
+                                <!-- Product price-->
+                                <p th:text="${product.costPrice}"></p>
+                            </div>
+                        </div>
+                        <!-- Product actions-->
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center"><a class="btn btn-outline-dark mt-auto"
+                                                        th:href="@{/product-detail(productId=${product.id})}">View
+                                options</a></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
