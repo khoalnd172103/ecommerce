@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -37,9 +38,14 @@ public class HomeController {
     }
 
     @RequestMapping("/index")
-    public String home(Model model) {
+    public String home(Model model, Principal principal) {
         List<Product> products = productService.findAllByIsActivated();
         List<Category> categories = categoryService.findAllByIsActivated();
+
+        if (principal != null) {
+            String username = principal.getName();
+            model.addAttribute("username", username);
+        }
 
         model.addAttribute("title", "Home Page");
         model.addAttribute("products", products);

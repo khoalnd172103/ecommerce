@@ -1,13 +1,12 @@
 package com.ecommerce.library.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "cart_item")
 public class CartItem {
@@ -19,9 +18,8 @@ public class CartItem {
     @Column(name = "quantity")
     private int quantity;
 
-
-    @Column(name = "unit_price")
-    private double unitPrice;
+    @Column(name = "total_price")
+    private double totalPrice;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "shopping_cart_id", referencedColumnName = "shopping_cart_id")

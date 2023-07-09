@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -29,7 +30,12 @@ public class ProductController {
     }
 
     @RequestMapping("/products")
-    public String products(Model model) {
+    public String products(Model model, Principal principal) {
+        if (principal != null) {
+            String username = principal.getName();
+            model.addAttribute("username", username);
+        }
+
         List<Product> products = productService.findAllByIsActivated();
         List<Category> categories = categoryService.findAllByIsActivated();
 
@@ -41,7 +47,12 @@ public class ProductController {
     }
 
     @GetMapping("/product-detail")
-    public String productDetail(@RequestParam("productId") Long id, Model model) {
+    public String productDetail(@RequestParam("productId") Long id, Model model, Principal principal) {
+        if (principal != null) {
+            String username = principal.getName();
+            model.addAttribute("username", username);
+        }
+
         Product product = productService.findById(id);
 
         List<Product> relatedProducts = productService.findAllByCategoryId(product.getCategory().getId());
@@ -54,7 +65,12 @@ public class ProductController {
     }
 
     @GetMapping("/product-category")
-    public String productsByCategory(@RequestParam("categoryId") Long id, Model model) {
+    public String productsByCategory(@RequestParam("categoryId") Long id, Model model, Principal principal) {
+        if (principal != null) {
+            String username = principal.getName();
+            model.addAttribute("username", username);
+        }
+
         Category category = categoryService.findById(id);
 
         List<Product> products = productService.findAllByCategoryId(id);

@@ -69,7 +69,7 @@ public class RegistrationController {
         Admin existing = adminService.findByUserName(userName);
         if (existing != null){
             theModel.addAttribute("adminDTO", adminDTO);
-            theModel.addAttribute("registrationError", "User name already exists.");
+            theModel.addAttribute("registrationError", "User name is already registered.");
             //session.setAttribute("registrationError", "User name already exists.");
 
             System.out.println("User name already exists.");

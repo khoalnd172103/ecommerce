@@ -20,8 +20,8 @@ import java.util.Collection;
 @Service
 public class AdminServiceImpl implements AdminService {
 
-//    @Autowired
-//    private BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     private AdminRepository adminRepository;
@@ -46,7 +46,7 @@ public class AdminServiceImpl implements AdminService {
         admin.setFirstName(adminDTO.getFirstName());
         admin.setLastName(adminDTO.getLastName());
         admin.setUserName(adminDTO.getUserName());
-        admin.setPassword(adminDTO.getPassword());
+        admin.setPassword(passwordEncoder.encode(adminDTO.getPassword()));
         admin.setRoles(Arrays.asList(roleRepository.findByName("ADMIN")));
 
         return adminRepository.save(admin);
