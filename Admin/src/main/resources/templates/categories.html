@@ -5,13 +5,13 @@
 
 </head>
 <body>
-<div class="container">
-    <div class="row">
-        <div class="col-md-4">
-            <ul th:replace="fragment :: nav"></ul>
-        </div>
+<div class="row">
+    <div class="col-md-2">
+        <ul th:replace="fragment :: nav"></ul>
+    </div>
 
-        <div class="col-md-8">
+    <div class="col-md-10">
+        <div class="container">
             <h1>Manage Category</h1>
             <div th:if="${size == 0}">
                 <p>No category</p>

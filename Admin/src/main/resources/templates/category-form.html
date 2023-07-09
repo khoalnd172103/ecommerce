@@ -6,13 +6,13 @@
 </head>
 <body>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-4">
-            <ul th:replace="fragment :: nav"></ul>
-        </div>
+<div class="row">
+    <div class="col-md-2">
+        <ul th:replace="fragment :: nav"></ul>
+    </div>
 
-        <div class="col-md-8">
+    <div class="col-md-6 d-flex align-items-center">
+        <div class="container">
             <form th:action="@{/update-category}" method="PUT" th:object="${category}">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -43,7 +43,6 @@
             <div th:if="${fail}" class="text-center alert alert-danger">
                 <p th:text="${fail}"></p>
             </div>
-
         </div>
     </div>
 </div>

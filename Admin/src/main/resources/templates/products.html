@@ -5,29 +5,30 @@
 
 </head>
 <body>
-<div class="container">
-    <div class="row">
-        <div class="col-md-4">
-            <ul th:replace="fragment :: nav"></ul>
-        </div>
+<div class="row">
+    <div class="col-md-2">
+        <ul th:replace="fragment :: nav"></ul>
+    </div>
 
-        <div class="col-md-8">
+    <div class="col-md-10">
+        <div class="container">
             <h1>Manage Product</h1>
             <div th:if="${size == 0}">
                 <p>No products</p>
             </div>
 
-<!--            <a th:href="@{/productAddForm}"-->
-<!--               class="btn btn-primary btn-sm mb-3">-->
-<!--                Add product-->
-<!--            </a>-->
+            <!--            <a th:href="@{/productAddForm}"-->
+            <!--               class="btn btn-primary btn-sm mb-3">-->
+            <!--                Add product-->
+            <!--            </a>-->
 
             <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addModal"
                     data-bs-whatever="@mdo">Add product
             </button>
 
             <!-- Begin Add Modal -->
-            <form th:action="@{/add-product}" method="POST" enctype="multipart/form-data"  class="mb-3" th:object="${product}">
+            <form th:action="@{/add-product}" method="POST" enctype="multipart/form-data" class="mb-3"
+                  th:object="${product}">
                 <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel"
                      aria-hidden="true">
                     <div class="modal-dialog">
@@ -44,7 +45,8 @@
                                         <input type="text" class="form-control" th:field="*{name}" name="name">
                                     </div>
                                     <div class="mb-3">
-                                        <select class="form-select" aria-label="Category" name="categories" th:field="*{category}">
+                                        <select class="form-select" aria-label="Category" name="categories"
+                                                th:field="*{category}">
                                             <option th:each="category : ${categories}"
                                                     th:value="${category.id}"
                                                     th:text="${category.name}"
@@ -53,11 +55,13 @@
                                     </div>
                                     <div class="mb-3">
                                         <label class="col-form-label">Description:</label>
-                                        <input type="text" class="form-control" th:field="*{description}" name="description">
+                                        <input type="text" class="form-control" th:field="*{description}"
+                                               name="description">
                                     </div>
                                     <div class="mb-3">
                                         <label class="col-form-label">Quantity:</label>
-                                        <input type="text" class="form-control" th:field="*{currentQuantity}" name="quantity">
+                                        <input type="text" class="form-control" th:field="*{currentQuantity}"
+                                               name="quantity">
                                     </div>
                                     <div class="mb-3">
                                         <label class="col-form-label">Price:</label>
@@ -85,7 +89,8 @@
                         <div class="modal-body">
                             <form>
                                 <div class="mb-3">
-                                    <input type="text" name="keyword" placeholder="What do you want to search ?" class="form-control">
+                                    <input type="text" name="keyword" placeholder="What do you want to search ?"
+                                           class="form-control">
                                 </div>
                             </form>
                         </div>

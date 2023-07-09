@@ -5,13 +5,13 @@
 
 </head>
 <body>
-<div class="container">
-    <div class="row">
-        <div class="col-md-4">
-            <ul th:replace="fragment :: nav"></ul>
-        </div>
+<div class="row">
+    <div class="col-md-2">
+        <ul th:replace="fragment :: nav"></ul>
+    </div>
 
-        <div class="col-md-8">
+    <div class="col-md-6 d-flex align-items-center">
+        <div class="container">
             <form th:action="@{/update-product}" enctype="multipart/form-data" method="POST" th:object="${product}">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -23,7 +23,8 @@
                                     <input type="text" class="form-control" th:field="*{name}" name="name">
                                 </div>
                                 <div class="mb-3">
-                                    <select class="form-select" aria-label="Category" name="categories" th:field="*{category}">
+                                    <select class="form-select" aria-label="Category" name="categories"
+                                            th:field="*{category}">
                                         <option th:each="category : ${categories}"
                                                 th:value="${category.id}"
                                                 th:text="${category.name}"
@@ -44,7 +45,8 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Image</label>
-                                    <img th:src="@{/image-product/{fileName}(fileName=${product.image})}" style="height: 80px; width: 80px;"/>
+                                    <img th:src="@{/image-product/{fileName}(fileName=${product.image})}"
+                                         style="height: 80px; width: 80px;"/>
                                 </div>
                                 <div class="mb-3">
                                     <input type="file" name="file" accept="image/png, image/jpeg"/>
@@ -65,11 +67,8 @@
             <div th:if="${fail}" class="text-center alert alert-danger">
                 <p th:text="${fail}"></p>
             </div>
-
-
         </div>
     </div>
-
 </div>
 
 <div th:replace="fragment :: script"></div>
