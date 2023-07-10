@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
@@ -32,7 +31,7 @@ public class CartController {
     public CartController(ProductService theProductService, CustomerService theCustomerService, ShoppingCartService theShoppingCartService) {
         this.productService = theProductService;
         this.customerService = theCustomerService;
-        this.shoppingCartService  = theShoppingCartService;
+        this.shoppingCartService = theShoppingCartService;
     }
 
     @GetMapping("/cart")
@@ -48,19 +47,19 @@ public class CartController {
         Customer customer = customerService.findByUserName(principal.getName());
         ShoppingCart shoppingCart = customer.getShoppingCart();
 
-        if(shoppingCart == null) {
+        if (shoppingCart == null) {
             model.addAttribute("check", "No item  in your cart");
         }
 
         model.addAttribute("shoppingCart", shoppingCart);
-        model.addAttribute("title","Shopping Cart");
+        model.addAttribute("title", "Shopping Cart");
 
         return "cart";
     }
 
     @GetMapping("/add-to-cart")
     public String addItemToCart(@RequestParam("productId") String productId,
-                                @RequestParam(value= "quantity", required = false, defaultValue = "1") int quantity,
+                                @RequestParam(value = "quantity", required = false, defaultValue = "1") int quantity,
                                 Principal principal,
                                 Model model,
                                 HttpServletRequest request) {
@@ -82,4 +81,52 @@ public class CartController {
         return "redirect:" + request.getHeader("Referer");
     }
 
+    @GetMapping("/update-cart")
+    public String updateItemInCart(@RequestParam("productId") String productId,
+                                   @RequestParam("quantity") String quantityString,
+                                   Model model,
+                                   Principal principal) {
+
+        Long id = Long.parseLong(productId);
+        int quantity = Integer.parseInt(quantityString);
+
+        if (principal != null) {
+            String username = principal.getName();
+            model.addAttribute("username", username);
+        } else {
+            return "redirect:/login";
+        }
+
+        Product product = productService.findById(id);
+        Customer customer = customerService.findByUserName(principal.getName());
+        ShoppingCart shoppingCart = shoppingCartService.updateItemInCart(product, quantity, customer);
+
+        model.addAttribute("shoppingCart", shoppingCart);
+        model.addAttribute("title", "Shopping Cart");
+
+        return "redirect:/cart";
+    }
+
+    @GetMapping("/delete-cart")
+    public String deleteItemFromCart(@RequestParam("productId") String productId,
+                                     Model model,
+                                     Principal principal) {
+        Long id = Long.parseLong(productId);
+
+        if (principal != null) {
+            String username = principal.getName();
+            model.addAttribute("username", username);
+        } else {
+            return "redirect:/login";
+        }
+
+        Product product = productService.findById(id);
+        Customer customer = customerService.findByUserName(principal.getName());
+        ShoppingCart shoppingCart = shoppingCartService.deleteItemFromCart(product, customer);
+
+        model.addAttribute("shoppingCart", shoppingCart);
+        model.addAttribute("title", "Shopping Cart");
+
+        return "redirect:/cart";
+    }
 }

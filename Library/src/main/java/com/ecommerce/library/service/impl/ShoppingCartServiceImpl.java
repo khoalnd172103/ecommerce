@@ -71,6 +71,49 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return shoppingCartRepository.save(cart);
     }
 
+    @Override
+    public ShoppingCart updateItemInCart(Product product, int quantity, Customer customer) {
+        ShoppingCart cart = customer.getShoppingCart();
+
+        Set<CartItem> cartItems = cart.getCartItemSet();
+
+        CartItem cartItem = findCartItem(cartItems, product.getId());
+
+        cartItem.setQuantity(quantity);
+        cartItem.setTotalPrice(quantity * product.getCostPrice());
+        cartItemRepository.save(cartItem);
+
+        int totalItems = totalItems(cartItems);
+        double totalPrice = totalPrice(cartItems);
+
+        cart.setTotalPrice(totalPrice);
+        cart.setTotalItem(totalItems);
+
+        return shoppingCartRepository.save(cart);
+    }
+
+    @Override
+    public ShoppingCart deleteItemFromCart(Product product, Customer customer) {
+        ShoppingCart cart = customer.getShoppingCart();
+
+        Set<CartItem> cartItems = cart.getCartItemSet();
+
+        CartItem cartItem = findCartItem(cartItems, product.getId());
+
+        cartItems.remove(cartItem);
+
+        cartItemRepository.delete(cartItem);
+
+        int totalItems = totalItems(cartItems);
+        double totalPrice = totalPrice(cartItems);
+
+        cart.setCartItemSet(cartItems);
+        cart.setTotalItem(totalItems);
+        cart.setTotalPrice(totalPrice);
+
+        return shoppingCartRepository.save(cart);
+    }
+
     private int totalItems(Set<CartItem> cartItems) {
         int total = 0;
         for (CartItem item : cartItems) {

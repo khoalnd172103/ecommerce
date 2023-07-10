@@ -25,9 +25,10 @@
                     <p th:text="${check}"></p>
                 </div>
 
-                <div class="card rounded-3 mb-4" th:if="${check == null}" th:each="cartItem : ${shoppingCart.cartItemSet}">
+                <div class="card rounded-3 mb-4" th:if="${check == null}"
+                     th:each="cartItem : ${shoppingCart.cartItemSet}">
                     <div class="card-body p-4">
-                        <div class="row d-flex justify-content-between align-items-center">
+                        <div class="row d-flex justify-content-center align-items-center">
                             <div class="col-md-2 col-lg-2 col-xl-2">
                                 <img
                                         th:src="@{/image-product/{fileName}(fileName=${cartItem.product.image})}"
@@ -35,29 +36,64 @@
                             </div>
                             <div class="col-md-3 col-lg-3 col-xl-3">
                                 <p class="lead fw-normal mb-2">
-                                    <a th:href="@{/product-detail(productId=${cartItem.product.id})}" th:text="${cartItem.product.name}"></a>
+                                    <a th:href="@{/product-detail(productId=${cartItem.product.id})}"
+                                       th:text="${cartItem.product.name}"></a>
                                 </p>
-<!--                                <p><span class="text-muted">Size: </span>M <span class="text-muted">Color: </span>Grey</p>-->
+                                <!--                                <p><span class="text-muted">Size: </span>M <span class="text-muted">Color: </span>Grey</p>-->
                             </div>
-                            <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                <button class="btn btn-link px-2"
-                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                                    <i class="fas fa-minus"></i>
-                                </button>
+                            <div class="col-md-2 col-lg-2 col-xl-2">
+                                <h5 class="mb-0" th:text="'$'+ ${cartItem.totalPrice}"></h5>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-xl-3">
+                                <form method="get" th:action="@{/update-cart}" class="d-flex justify-content-between">
+                                    <input type="number" id="typeNumber" class="form-control" style="width: 50%;"
+                                           th:value="${cartItem.quantity}" name="quantity"/>
+                                    <input type="hidden" name="productId" th:value="${cartItem.product.id}">
+                                    <button type="submit" class="btn btn-primary">Update</button>
+                                </form>
+                            </div>
 
-                                <input min="0" name="quantity" th:value="${cartItem.quantity}" type="number"
-                                       class="form-control form-control-sm"/>
+                            <div class="col-md-2 col-lg-2 col-xl-2">
+                                <form method="get" th:action="@{/delete-cart}" class="d-flex justify-content-center">
+                                    <input type="hidden" name="productId" th:value="${cartItem.product.id}">
+                                    <button type="submit" class="btn btn-warning">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                                <button class="btn btn-link px-2"
-                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
-                            <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                <h5 class="mb-0" th:text="'$'+ ${cartItem.product.costPrice}"></h5>
-                            </div>
-                            <div class="col-md-1 col-lg-1 col-xl-1">
-                                <a href="#" class="text-danger"><i class="bi-trash-fill"></i></a>
+                <div class="card mb-4">
+                    <div class="card-body p-4 d-flex flex-row">
+                        <div class="form-outline d-flex flex-row-reverse flex-fill">
+                            <div class="card col-6">
+                                <div class="card-header text-center">Order summary</div>
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <h5 class="card-title">Total items: </h5>
+                                        <h5 class="card-title fw-normal ms-2 text-secondary" th:text="${shoppingCart.totalItem}"></h5>
+                                    </div>
+
+                                    <div class="d-flex align-items-center">
+                                        <h5 class="card-title">Total price: </h5>
+                                        <h5 class="card-title fw-normal ms-2 text-secondary" th:text="'$' + ${shoppingCart.totalPrice}"></h5>
+                                    </div>
+
+                                    <div class="d-flex align-items-center">
+                                        <h5 class="card-title">Shipping cost: </h5>
+                                        <h5 class="card-title fw-normal ms-2 text-secondary">Free</h5>
+                                    </div>
+
+                                    <div class="d-flex align-items-center">
+                                        <h5 class="card-title">Coupon codes: </h5>
+                                        <h5 class="card-title fw-normal ms-2 text-secondary">Free</h5>
+                                    </div>
+
+                                    <div class="d-flex align-items-center">
+                                        <h5 class="card-title">Grand total: </h5>
+                                        <h5 class="card-title fw-normal ms-2 text-secondary">Free</h5>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -67,7 +103,7 @@
                     <div class="card-body p-4 d-flex flex-row">
                         <div class="form-outline flex-fill">
                             <input type="text" class="form-control form-control-lg"/>
-                            <label class="form-label" >Discound code</label>
+                            <label class="form-label">Discound code</label>
                         </div>
                         <button type="button" class="btn btn-outline-warning btn-lg ms-3">Apply</button>
                     </div>
@@ -85,6 +121,20 @@
 </section>
 
 <div th:replace="fragment :: footer"></div>
+
+<script>
+    function updateCart() {
+        // Get the quantity value
+        var quantity = document.getElementById('quantityInput').value;
+
+        // Update the hidden input field in the form
+        document.getElementById('updateQuantityInput').value = quantity;
+    }
+
+
+
+</script>
+
 
 <!-- Bootstrap core JS-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
