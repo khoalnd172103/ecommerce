@@ -7,6 +7,7 @@ import com.ecommerce.library.service.CustomerService;
 import com.ecommerce.library.service.ProductService;
 import com.ecommerce.library.service.ShoppingCartService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,7 +36,7 @@ public class CartController {
     }
 
     @GetMapping("/cart")
-    public String cart(Model model, Principal principal) {
+    public String cart(Model model, Principal principal, HttpSession session) {
 
         if (principal != null) {
             String username = principal.getName();
@@ -62,6 +63,7 @@ public class CartController {
                                 @RequestParam(value = "quantity", required = false, defaultValue = "1") int quantity,
                                 Principal principal,
                                 Model model,
+                                HttpSession session,
                                 HttpServletRequest request) {
         Long id = Long.parseLong(productId);
 
@@ -76,6 +78,7 @@ public class CartController {
         Customer customer = customerService.findByUserName(principal.getName());
         ShoppingCart shoppingCart = shoppingCartService.addItemToCart(product, quantity, customer);
 
+        session.setAttribute("totalItems", shoppingCart.getTotalItem());
         model.addAttribute("shoppingCart", shoppingCart);
 
         return "redirect:" + request.getHeader("Referer");
@@ -85,6 +88,7 @@ public class CartController {
     public String updateItemInCart(@RequestParam("productId") String productId,
                                    @RequestParam("quantity") String quantityString,
                                    Model model,
+                                   HttpSession session,
                                    Principal principal) {
 
         Long id = Long.parseLong(productId);
@@ -101,6 +105,7 @@ public class CartController {
         Customer customer = customerService.findByUserName(principal.getName());
         ShoppingCart shoppingCart = shoppingCartService.updateItemInCart(product, quantity, customer);
 
+        session.setAttribute("totalItems", shoppingCart.getTotalItem());
         model.addAttribute("shoppingCart", shoppingCart);
         model.addAttribute("title", "Shopping Cart");
 
@@ -110,6 +115,7 @@ public class CartController {
     @GetMapping("/delete-cart")
     public String deleteItemFromCart(@RequestParam("productId") String productId,
                                      Model model,
+                                     HttpSession session,
                                      Principal principal) {
         Long id = Long.parseLong(productId);
 
@@ -124,6 +130,7 @@ public class CartController {
         Customer customer = customerService.findByUserName(principal.getName());
         ShoppingCart shoppingCart = shoppingCartService.deleteItemFromCart(product, customer);
 
+        session.setAttribute("totalItems", shoppingCart.getTotalItem());
         model.addAttribute("shoppingCart", shoppingCart);
         model.addAttribute("title", "Shopping Cart");
 

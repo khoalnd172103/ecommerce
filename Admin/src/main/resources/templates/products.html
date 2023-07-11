@@ -130,7 +130,7 @@
                     <td th:text="${product.costPrice}"></td>
                     <td th:text="${product.currentQuantity}"></td>
                     <td>
-                        <img th:src="@{/image-product/{fileName}(fileName=${product.image})}"
+                        <img th:src="@{/image-product/product/{fileName}(fileName=${product.image})}"
                              style="height: 40px; width: 40px;"/>
                     </td>
                     <td>

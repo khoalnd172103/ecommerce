@@ -42,7 +42,8 @@ public class CustomerConfiguration {
                         configurer
                                 .requestMatchers("/index/**").permitAll()
                                 .requestMatchers("/**").permitAll()
-                                .requestMatchers("/image-product/**").permitAll()
+//                                .requestMatchers("/image-product/**").permitAll()
+//                                .requestMatchers("/image/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .formLogin(form ->
