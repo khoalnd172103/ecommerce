@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragment :: header"></head>
+
+<body>
+
+<div th:replace="fragment :: navigation"></div>
+
+<div th:replace="fragment :: banner"></div>
+
+<section style="background-color: #eee;">
+    <div class="container pb-5 pt-5">
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+            <tr>
+                <th>Index</th>
+                <th>Order date</th>
+                <th>Delivery date</th>
+                <th>Shipping fee</th>
+                <th>Total</th>
+                <th>Order status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order : ${orderList}" th:if="${size > 0}">
+                <td th:text="${order.id}"></td>
+                <td th:text="${order.orderDate}"></td>
+                <td th:text="${order.deliveryDate}"></td>
+                <td th:text="${order.shippingFee}"></td>
+                <td th:text="${order.totalPrice}"></td>
+                <td th:text="${order.orderStatus}"></td>
+                <!--        <td>-->
+                <!--            <a th:href="@{/updateCategoryForm(categoryId=${category.id})}"-->
+                <!--               class="btn btn-primary btn-sm mb-3">-->
+                <!--                Update-->
+                <!--            </a>-->
+                <!--        </td>-->
+                <!--        <td>-->
+                <!--            <a th:if="${category.isActivated == true}"-->
+                <!--               th:href="@{/deleteCategory(categoryId=${category.id})}"-->
+                <!--               class="btn btn-danger btn-sm mb-3"-->
+                <!--               onclick="if (!(confirm('Are you sure to delete this category ?'))) return false">-->
+                <!--                Delete-->
+                <!--            </a>-->
+                <!--            <a th:if="${category.isDeleted == true}" th:href="@{/enableCategory(categoryId=${category.id})}"-->
+                <!--               class="btn btn-warning btn-sm mb-3">-->
+                <!--                Enable-->
+                <!--            </a>-->
+                <!--        </td>-->
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<div th:replace="fragment :: footer"></div>
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>

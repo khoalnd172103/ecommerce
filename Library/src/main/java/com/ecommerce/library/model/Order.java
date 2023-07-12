@@ -1,16 +1,17 @@
 package com.ecommerce.library.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 import java.util.List;
 
-@Data
+
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 @Entity
 @Table(name = "orders")
 public class Order {
@@ -37,10 +38,17 @@ public class Order {
     @Column(name = "quantity")
     private int quantity;
 
+    @Column(name = "tax")
+    private double tax;
+
+    @Column(name = "payment")
+    private String payment;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
     private Customer customer;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private List<OrderDetail> orderDetailList;
+
 }

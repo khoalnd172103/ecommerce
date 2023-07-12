@@ -8,4 +8,6 @@ public interface CustomerService extends UserDetailsService {
     public Customer findByUserName(String userName);
 
     public Customer save(CustomerDTO customerDTO);
+
+    public Customer updateInfo(Customer customer);
 }

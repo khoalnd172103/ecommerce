@@ -54,6 +54,17 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public Customer updateInfo(Customer customer) {
+        Customer customerSaved = customerRepository.findByUserName(customer.getUserName());
+        customerSaved.setFirstName(customer.getFirstName());
+        customerSaved.setLastName(customer.getLastName());
+        customerSaved.setAddress(customer.getAddress());
+        customerSaved.setPhone(customer.getPhone());
+
+        return customerRepository.save(customerSaved);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         Customer customer = customerRepository.findByUserName(userName);
 

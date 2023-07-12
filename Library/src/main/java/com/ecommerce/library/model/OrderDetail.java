@@ -16,11 +16,11 @@ public class OrderDetail {
     @Column(name = "order_detail_id")
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", referencedColumnName = "product_id")
     private Product product;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne (fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id", referencedColumnName = "order_id")
     private Order order;
 

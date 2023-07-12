@@ -62,7 +62,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         cart.setCartItemSet(cartItems);
 
         int totalItems = totalItems(cart.getCartItemSet());
-        int totalPrice = totalItems(cart.getCartItemSet());
+        double totalPrice = totalPrice(cart.getCartItemSet());
 
         cart.setTotalItem(totalItems);
         cart.setTotalPrice(totalPrice);
@@ -112,6 +112,19 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         cart.setTotalPrice(totalPrice);
 
         return shoppingCartRepository.save(cart);
+    }
+
+    @Override
+    public void deleteCartById(Long id) {
+        ShoppingCart shoppingCart = shoppingCartRepository.getById(id);
+        for (CartItem cartItem : shoppingCart.getCartItemSet()) {
+            cartItemRepository.deleteById(cartItem.getId());
+        }
+        shoppingCart.setCustomer(null);
+        shoppingCart.getCartItemSet().clear();
+        shoppingCart.setTotalPrice(0);
+        shoppingCart.setTotalItem(0);
+        shoppingCartRepository.save(shoppingCart);
     }
 
     private int totalItems(Set<CartItem> cartItems) {

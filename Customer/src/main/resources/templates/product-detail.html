@@ -24,7 +24,7 @@
         <form th:action="@{/add-to-cart}" method="get">
             <div class="row gx-4 gx-lg-5 align-items-center" th:object="${product}">
                 <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0"
-                                           th:src="@{/image-product/{fileName}(fileName=${product.image})}" alt="..."/>
+                                           th:src="@{/image-product/product/{fileName}(fileName=${product.image})}" alt="..."/>
                 </div>
                 <div class="col-md-6">
                     <!--                <div class="small mb-1">SKU: BST-498</div>-->

@@ -50,6 +50,7 @@ public class CartController {
 
         if (shoppingCart == null) {
             model.addAttribute("check", "No item  in your cart");
+            session.setAttribute("totalItems", 0);
         }
 
         model.addAttribute("shoppingCart", shoppingCart);
@@ -135,5 +136,27 @@ public class CartController {
         model.addAttribute("title", "Shopping Cart");
 
         return "redirect:/cart";
+    }
+
+    @GetMapping("/check-out")
+    public String checkout(Model model,
+                           Principal principal,
+                           HttpSession session) {
+        if (principal != null) {
+            String username = principal.getName();
+            model.addAttribute("username", username);
+        } else {
+            return "redirect:/login";
+        }
+
+        Customer customer = customerService.findByUserName(principal.getName());
+        ShoppingCart shoppingCart = customer.getShoppingCart();
+
+        session.setAttribute("totalItems", shoppingCart.getTotalItem());
+        model.addAttribute("customer", customer);
+        model.addAttribute("shoppingCart", shoppingCart);
+        model.addAttribute("title", "Check out");
+
+        return "checkout";
     }
 }

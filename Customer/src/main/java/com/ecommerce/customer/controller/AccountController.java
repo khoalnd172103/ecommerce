@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
 
@@ -28,5 +30,19 @@ public class AccountController {
         model.addAttribute("title", "My account");
 
         return "account-home";
+    }
+
+    @PostMapping("/update-info")
+    public String updateInfo(@ModelAttribute("customer") Customer customer,
+                             Model model,
+                             Principal principal) {
+        Customer customerSaved = customerService.findByUserName(principal.getName());
+
+        customerSaved = customerService.updateInfo(customer);
+
+        model.addAttribute("customer", customerSaved);
+        model.addAttribute("title", "My account");
+
+        return "redirect:/account-home";
     }
 }
