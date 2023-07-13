@@ -8,50 +8,153 @@
 
 <div th:replace="fragment :: banner"></div>
 
-<section style="background-color: #eee;">
-    <div class="container pb-5 pt-5">
-        <table class="table table-bordered table-striped">
-            <thead class="table-dark">
-            <tr>
-                <th>Index</th>
-                <th>Order date</th>
-                <th>Delivery date</th>
-                <th>Shipping fee</th>
-                <th>Total</th>
-                <th>Order status</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="order : ${orderList}" th:if="${size > 0}">
-                <td th:text="${order.id}"></td>
-                <td th:text="${order.orderDate}"></td>
-                <td th:text="${order.deliveryDate}"></td>
-                <td th:text="${order.shippingFee}"></td>
-                <td th:text="${order.totalPrice}"></td>
-                <td th:text="${order.orderStatus}"></td>
-                <!--        <td>-->
-                <!--            <a th:href="@{/updateCategoryForm(categoryId=${category.id})}"-->
-                <!--               class="btn btn-primary btn-sm mb-3">-->
-                <!--                Update-->
-                <!--            </a>-->
-                <!--        </td>-->
-                <!--        <td>-->
-                <!--            <a th:if="${category.isActivated == true}"-->
-                <!--               th:href="@{/deleteCategory(categoryId=${category.id})}"-->
-                <!--               class="btn btn-danger btn-sm mb-3"-->
-                <!--               onclick="if (!(confirm('Are you sure to delete this category ?'))) return false">-->
-                <!--                Delete-->
-                <!--            </a>-->
-                <!--            <a th:if="${category.isDeleted == true}" th:href="@{/enableCategory(categoryId=${category.id})}"-->
-                <!--               class="btn btn-warning btn-sm mb-3">-->
-                <!--                Enable-->
-                <!--            </a>-->
-                <!--        </td>-->
-            </tr>
-            </tbody>
-        </table>
+<section class="h-100" style="background-color: #eee;">
+    <div class="container h-100 py-5">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-10">
+
+                <div class="mb-4 text-center">
+                    <h3 class="fw-normal mb-0 text-black">Your orders</h3>
+                </div>
+
+                <div class="card mb-5" th:each="order : ${orderList}" th:if="${size > 0}">
+                    <div class="card-header d-flex justify-content-between">
+                        <h5 class="mb-0">Ray Shop</h5>
+                        <h5 th:text="${order.orderDate}"></h5>
+                        <h5 class="mb-0" th:text="${order.orderStatus}"
+                            th:classappend="${order.orderStatus == 'PENDING'} ? 'text-primary' : (${order.orderStatus == 'CANCEL'} ? 'text-danger' : 'text-success')"></h5>
+                    </div>
+                    <div class="card-body d-flex justify-content-between px-5" th:each="orderDetail : ${order.orderDetailList}">
+                        <a th:href="@{/product-detail(productId=${orderDetail.product.id})}" class="d-flex justify-content-between link-dark" style="text-decoration: none;">
+                            <img th:src="@{/image-product/product/{fileName}(fileName=${orderDetail.product.image})}"
+                                 class="img-fluid rounded-3 img-thumbnail" style="width: 80px; height: 80px;">
+                            <div class="d-flex flex-column justify-content-between px-4">
+                                <p class="card-title " th:text="${orderDetail.product.name}" ></p>
+                                <p class="card-title" th:text="'x' + ${order.quantity}"></p>
+                            </div>
+                        </a>
+                        <div class="d-flex flex-column justify-content-center">
+                            <span class="fs-4 " th:text="'$' + ${order.totalPrice}"></span>
+                        </div>
+                    </div>
+                    <div class="card-footer text-body-secondary d-flex justify-content-end">
+                        <button type="button" class="btn btn-outline-dark mt-auto" data-bs-toggle="modal"
+                                th:if="${order.orderStatus == 'PENDING'}"
+                                th:data-bs-target="'#cancelModal' + ${order.id}" data-bs-whatever="@mdo">
+                            Cancel
+                        </button>
+                        <button th:if="${order.orderStatus == 'COMPLETE'}" type="button" class="btn btn-outline-dark mt-auto">Order again</button>
+                        <span class="fs-3 text-danger d-flex justify-content-end" style="width: 180px;" th:text="'Total:  $' + ${order.totalPrice}"></span>
+                    </div>
+                    <!-- Begin Add Modal -->
+                    <form th:action="@{/cancel-order}" method="POST" enctype="multipart/form-data" th:object="${order}">
+                        <div class="modal fade" th:id="'cancelModal' + ${order.id}" tabindex="-1"
+                             aria-labelledby="addModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="addModalLabel">Cancel Confirmation</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input type="hidden" class="form-control" name="orderId" th:value="${order.id}">
+                                        <p>Are you sure that you want to cancel this order?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
+                                        </button>
+                                        <button type="submit" class="btn btn-danger">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- End Add Modal -->
+                </div>
+            </div>
+        </div>
     </div>
 </section>
+
+<!--<section style="background-color: #eee;">-->
+<!--    <div class="container pb-5 pt-5">-->
+<!--        <table class="table table-bordered table-striped">-->
+<!--            <thead class="table-dark">-->
+<!--            <tr>-->
+<!--                <th>Index</th>-->
+<!--                <th>Order date</th>-->
+<!--                <th>Delivery date</th>-->
+<!--                <th>Shipping fee</th>-->
+<!--                <th>Total</th>-->
+<!--                <th>Order status</th>-->
+<!--                <th>Action</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--            <tr th:each="order : ${orderList}" th:if="${size > 0}">-->
+<!--                <td th:text="${order.id}"></td>-->
+<!--                <td th:text="${order.orderDate}"></td>-->
+<!--                <td th:text="${order.deliveryDate} ?: 'Not specified'"></td>-->
+<!--                <td th:text="${order.shippingFee}"></td>-->
+<!--                <td th:text="${order.totalPrice}"></td>-->
+<!--                <td th:text="${order.orderStatus}" th:classappend="${order.orderStatus == 'PENDING'} ? 'text-primary' : 'text-danger'"></td>-->
+<!--                <td>-->
+<!--                    <button type="button" class="btn btn-outline-danger mb-3" data-bs-toggle="modal"-->
+<!--                            th:if="${order.orderStatus == 'PENDING'}" th:data-bs-target="'#cancelModal' + ${order.id}" data-bs-whatever="@mdo">-->
+<!--                        Cancel-->
+<!--                    </button>-->
+<!--                </td>-->
+<!--                &lt;!&ndash; Begin Add Modal &ndash;&gt;-->
+<!--                <form th:action="@{/cancel-order}" method="POST" enctype="multipart/form-data" th:object="${order}">-->
+<!--                    <div class="modal fade" th:id="'cancelModal' + ${order.id}" tabindex="-1" aria-labelledby="addModalLabel"-->
+<!--                         aria-hidden="true">-->
+<!--                        <div class="modal-dialog">-->
+<!--                            <div class="modal-content">-->
+<!--                                <div class="modal-header">-->
+<!--                                    <h1 class="modal-title fs-5" id="addModalLabel">Cancel Confirmation</h1>-->
+<!--                                    <button type="button" class="btn-close" data-bs-dismiss="modal"-->
+<!--                                            aria-label="Close"></button>-->
+<!--                                </div>-->
+<!--                                <div class="modal-body">-->
+<!--                                    <input type="hidden" class="form-control" name="orderId" th:value="${order.id}">-->
+<!--                                    <p>Are you sure that you want to cancel this order?</p>-->
+<!--                                </div>-->
+<!--                                <div class="modal-footer">-->
+<!--                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
+<!--                                    <button type="submit" class="btn btn-danger">Cancel</button>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--                &lt;!&ndash; End Add Modal &ndash;&gt;-->
+<!--            </tr>-->
+<!--            <tr th:each="order : ${orderList}" th:if="${size > 0}">-->
+<!--                <td colspan="7">-->
+<!--                    &lt;!&ndash; Begin Order Details &ndash;&gt;-->
+<!--                    <table class="table table-bordered">-->
+<!--                        <thead>-->
+<!--                        <tr>-->
+<!--                            <th>Product Name</th>-->
+<!--                        </tr>-->
+<!--                        </thead>-->
+<!--                        <tbody>-->
+<!--                        <th:block th:each="orderDetail : ${order.orderDetailList}">-->
+<!--                            <tr>-->
+<!--                                <td th:text="${orderDetail.product.name}"></td>-->
+<!--                            </tr>-->
+<!--                        </th:block>-->
+<!--                        </tbody>-->
+<!--                    </table>-->
+<!--                    &lt;!&ndash; End Order Details &ndash;&gt;-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--</section>-->
 
 <div th:replace="fragment :: footer"></div>
 

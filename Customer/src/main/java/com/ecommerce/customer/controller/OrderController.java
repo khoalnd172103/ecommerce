@@ -2,18 +2,23 @@ package com.ecommerce.customer.controller;
 
 import com.ecommerce.library.model.Customer;
 import com.ecommerce.library.model.Order;
+import com.ecommerce.library.model.OrderDetail;
 import com.ecommerce.library.model.ShoppingCart;
 import com.ecommerce.library.repository.CartItemRepository;
 import com.ecommerce.library.repository.ShoppingCartRepository;
 import com.ecommerce.library.service.CustomerService;
+import com.ecommerce.library.service.OrderDetailService;
 import com.ecommerce.library.service.OrderService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -26,6 +31,9 @@ public class OrderController {
     private OrderService orderService;
 
     @Autowired
+    private OrderDetailService orderDetailService;
+
+    @Autowired
     private CartItemRepository cartItemRepository;
 
     @Autowired
@@ -33,16 +41,19 @@ public class OrderController {
 
     @Autowired
     public OrderController(CustomerService theCustomerService,
-                           OrderService theOrderService) {
+                           OrderService theOrderService,
+                           OrderDetailService theOrderDetailService) {
         this.customerService = theCustomerService;
         this.orderService = theOrderService;
+        this.orderDetailService = theOrderDetailService;
     }
 
     @GetMapping("/order")
     public String order(Principal principal, Model model, HttpSession session) {
         if (principal != null) {
             String username = principal.getName();
-            model.addAttribute("username", username);
+            Customer customer = customerService.findByUserName(username);
+            model.addAttribute("customer", customer);
         } else {
             return "redirect:/login";
         }
@@ -57,6 +68,8 @@ public class OrderController {
         }
 
         List<Order> orderList = customer.getOrderList();
+
+        model.addAttribute("customer", customer);
         model.addAttribute("orderList", orderList);
         model.addAttribute("size", orderList.size());
         model.addAttribute("title", "Your Orders");
@@ -68,7 +81,8 @@ public class OrderController {
     public String saveOrder(Principal principal, Model model) {
         if (principal != null) {
             String username = principal.getName();
-            model.addAttribute("username", username);
+            Customer customer = customerService.findByUserName(username);
+            model.addAttribute("customer", customer);
         } else {
             return "redirect:/login";
         }
@@ -78,6 +92,16 @@ public class OrderController {
         orderService.saveOrder(shoppingCart);
         //cartItemRepository.deleteCartItemById(shoppingCart.getId());
         shoppingCartRepository.delete(shoppingCart);
+
+        return "redirect:/order";
+    }
+
+    @PostMapping("/cancel-order")
+    public String cancelOrder(@RequestParam("orderId") Long orderId,
+                              Principal principal,
+                              Model model) {
+
+        orderService.cancelOrderById(orderId);
 
         return "redirect:/order";
     }

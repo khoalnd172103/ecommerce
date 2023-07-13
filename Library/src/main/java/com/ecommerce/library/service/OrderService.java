@@ -6,4 +6,8 @@ import com.ecommerce.library.model.ShoppingCart;
 public interface OrderService {
 
     Order saveOrder(ShoppingCart shoppingCart);
+
+    Order findById(Long id);
+
+    void cancelOrderById(Long id);
 }

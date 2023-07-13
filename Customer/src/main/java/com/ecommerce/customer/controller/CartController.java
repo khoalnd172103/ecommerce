@@ -40,7 +40,8 @@ public class CartController {
 
         if (principal != null) {
             String username = principal.getName();
-            model.addAttribute("username", username);
+            Customer customer = customerService.findByUserName(username);
+            model.addAttribute("customer", customer);
         } else {
             return "redirect:/login";
         }
@@ -70,7 +71,8 @@ public class CartController {
 
         if (principal != null) {
             String username = principal.getName();
-            model.addAttribute("username", username);
+            Customer customer = customerService.findByUserName(username);
+            model.addAttribute("customer", customer);
         } else {
             return "redirect:/login";
         }
@@ -97,7 +99,8 @@ public class CartController {
 
         if (principal != null) {
             String username = principal.getName();
-            model.addAttribute("username", username);
+            Customer customer = customerService.findByUserName(username);
+            model.addAttribute("customer", customer);
         } else {
             return "redirect:/login";
         }
@@ -122,7 +125,8 @@ public class CartController {
 
         if (principal != null) {
             String username = principal.getName();
-            model.addAttribute("username", username);
+            Customer customer = customerService.findByUserName(username);
+            model.addAttribute("customer", customer);
         } else {
             return "redirect:/login";
         }
@@ -144,7 +148,8 @@ public class CartController {
                            HttpSession session) {
         if (principal != null) {
             String username = principal.getName();
-            model.addAttribute("username", username);
+            Customer customer = customerService.findByUserName(username);
+            model.addAttribute("customer", customer);
         } else {
             return "redirect:/login";
         }

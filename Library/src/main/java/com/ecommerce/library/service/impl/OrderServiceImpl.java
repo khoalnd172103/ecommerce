@@ -13,10 +13,7 @@ import com.ecommerce.library.service.ShoppingCartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -69,5 +66,27 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderDetailList(orderDetailList);
         shoppingCartService.deleteCartById(shoppingCart.getId());
         return orderRepository.save(order);
+    }
+
+    @Override
+    public Order findById(Long id) {
+        Optional<Order> result = orderRepository.findById(id);
+
+        Order order = null;
+
+        if (result.isPresent()) {
+            order = result.get();
+        }
+
+        return order;
+    }
+
+    @Override
+    public void cancelOrderById(Long id) {
+        Order order = orderRepository.findById(id).get();
+
+        order.setOrderStatus("CANCEL");
+
+        orderRepository.save(order);
     }
 }

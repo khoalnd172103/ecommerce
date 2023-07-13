@@ -1,13 +1,17 @@
 package com.ecommerce.customer.controller;
 
 import com.ecommerce.library.model.Category;
+import com.ecommerce.library.model.Customer;
 import com.ecommerce.library.model.Product;
 import com.ecommerce.library.service.CategoryService;
+import com.ecommerce.library.service.CustomerService;
 import com.ecommerce.library.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -24,23 +28,36 @@ public class ProductController {
     private final ProductService productService;
 
     @Autowired
-    public ProductController(ProductService theProductService, CategoryService theCategoryService) {
+    private final CustomerService customerService;
+
+    @Autowired
+    public ProductController(ProductService theProductService,
+                             CategoryService theCategoryService,
+                             CustomerService theCustomerService) {
         this.productService = theProductService;
         this.categoryService = theCategoryService;
+        this.customerService = theCustomerService;
     }
 
-    @RequestMapping("/products")
-    public String products(Model model, Principal principal) {
+    @RequestMapping("/products/{pageNo}")
+    public String products(@PathVariable("pageNo") int pageNo, Model model, Principal principal) {
         if (principal != null) {
             String username = principal.getName();
-            model.addAttribute("username", username);
+            Customer customer = customerService.findByUserName(username);
+            model.addAttribute("customer", customer);
         }
 
-        List<Product> products = productService.findAllByIsActivated();
+//        List<Product> products = productService.findAllByIsActivated();
+        Page<Product> products = productService.pageProduct(pageNo);
+
+        List<Product> productList = products.getContent();
         List<Category> categories = categoryService.findAllByIsActivated();
 
         model.addAttribute("title", "Products");
-        model.addAttribute("products", products);
+        model.addAttribute("size", products.getTotalElements());
+        model.addAttribute("totalPages", products.getTotalPages());
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("products", productList);
         model.addAttribute("categories", categories);
 
         return "products";
@@ -50,7 +67,8 @@ public class ProductController {
     public String productDetail(@RequestParam("productId") Long id, Model model, Principal principal) {
         if (principal != null) {
             String username = principal.getName();
-            model.addAttribute("username", username);
+            Customer customer = customerService.findByUserName(username);
+            model.addAttribute("customer", customer);
         }
 
         Product product = productService.findById(id);
@@ -68,7 +86,8 @@ public class ProductController {
     public String productsByCategory(@RequestParam("categoryId") Long id, Model model, Principal principal) {
         if (principal != null) {
             String username = principal.getName();
-            model.addAttribute("username", username);
+            Customer customer = customerService.findByUserName(username);
+            model.addAttribute("customer", customer);
         }
 
         Category category = categoryService.findById(id);

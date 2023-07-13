@@ -11,12 +11,12 @@
         <div class="mb-5">
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a th:href="@{/index}">Home</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/index}" class="link-dark">Home</a></li>
                     <li class="breadcrumb-item active" aria-current="page">
                         <a th:href="@{/product-category(categoryId=${product.category.id})}"
-                           th:text="${product.category.name}"></a>
+                           th:text="${product.category.name}" class="link-dark"></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page" th:text="${product.name}"></li>
+                    <li class="breadcrumb-item active text-dark" aria-current="page" th:text="${product.name}"></li>
                 </ol>
             </nav>
         </div>
@@ -54,7 +54,7 @@
                     <div class="card h-100">
                         <!-- Product image-->
                         <img class="card-img-top img-thumbnail"
-                             th:src="@{/image-product/{fileName}(fileName=${product.image})}" alt=""/>
+                             th:src="@{/image-product/product/{fileName}(fileName=${product.image})}" alt=""/>
                         <!-- Product details-->
                         <div class="card-body p-4">
                             <div class="text-center">
@@ -66,9 +66,9 @@
                         </div>
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto"
-                                                        th:href="@{/product-detail(productId=${product.id})}">View
-                                options</a></div>
+                            <div class="text-center">
+                                <a class="btn btn-outline-dark mt-auto" th:href="@{/product-detail(productId=${product.id})}">View</a>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -41,13 +41,38 @@
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto"
-                                                            th:href="@{/product-detail(productId=${product.id})}">View
-                                    options</a></div>
+                                <div class="text-center">
+                                    <a class="btn btn-outline-dark mt-auto"
+                                       th:href="@{/product-detail(productId=${product.id})}">View</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination d-flex justify-content-center">
+                        <li class="page-item" th:if="${currentPage != 0}">
+                            <a th:href="@{'/products/' + ${currentPage - 1}}"
+                               class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                        <li th:each="i: ${#numbers.sequence(1, totalPages)}"
+                            th:class="${currentPage == i - 1} ? 'page-item active' : 'page-item'">
+                            <a th:href="@{'/products/' + ${i - 1}}"
+                               class="page-link" href="#"><span th:text="${i}"></span></a>
+                        </li>
+                        <li th:if="${currentPage + 1 != totalPages}"
+                            class="page-item">
+                            <a th:href="@{'/products/' + ${currentPage + 1}}"
+                               class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </section>
     </div>

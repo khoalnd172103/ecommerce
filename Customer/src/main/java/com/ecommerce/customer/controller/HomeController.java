@@ -50,18 +50,20 @@ public class HomeController {
         List<Product> products = productService.findAllByIsActivated();
         List<Category> categories = categoryService.findAllByIsActivated();
 
+        String username = "";
+        Customer customer = null;
+
         if (principal != null) {
-            String username = principal.getName();
-            session.setAttribute("username", username);
-            Customer customer = customerService.findByUserName(username);
+            username = principal.getName();
+            customer = customerService.findByUserName(username);
+            model.addAttribute("customer", customer);
             ShoppingCart shoppingCart = customer.getShoppingCart();
             if (shoppingCart != null) {
                 session.setAttribute("totalItems", shoppingCart.getTotalItem());
             }
-        } else {
-            session.removeAttribute("username");
         }
 
+        session.setAttribute("customer", customer);
         model.addAttribute("title", "Home Page");
         model.addAttribute("products", products);
         model.addAttribute("categories", categories);

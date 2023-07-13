@@ -34,7 +34,7 @@
                             <a class="nav-link dropdown-toggle" href="#" role="button"
                                data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" th:href="@{/products}">All Products</a></li>
+                                <li><a class="dropdown-item" th:href="@{/products/0}">All Products</a></li>
                                 <li>
                                     <hr class="dropdown-divider"/>
                                 </li>
@@ -45,30 +45,30 @@
                     </ul>
                 </div>
                 <div class="col-md-6">
-                    <div class="input-group">
+                    <form class="input-group">
                         <input type="text" class="form-control" placeholder="Search" aria-label="+"
                                aria-describedby="button-addon2">
                         <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
-                    </div>
+                    </form>
                 </div>
-                <div class="col-md-2" th:if="${session.username != null}">
-                    <form class="d-flex justify-content-center">
+                <div class="col-md-2" th:if="${customer}">
+                    <form th:action="@{/cart}" class="d-flex justify-content-center">
                         <button class="btn btn-outline-dark" type="submit">
                             <i class="bi-cart-fill me-1"></i>
-                            <a th:href="@{/cart}">Cart</a>
+                            <span>Cart</span>
                             <span class="badge bg-dark text-white ms-1 rounded-pill" th:text="${session.totalItems == null ? '0' : session.totalItems}"></span>
                         </button>
                     </form>
                 </div>
-                <div class="col-md-1" th:if="${session.username != null}">
+                <div class="col-md-1" th:if="${customer}">
                     <div class="dropdown text-center">
                         <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1"
                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32"
+                            <img th:src="@{/{fileName}(fileName=${session.customer.image})}" alt="mdo" width="32" height="32"
                                  class="rounded-circle">
                         </a>
                         <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                            <li><p class="dropdown-item text-warning" th:text="${session.username}"></p></li>
+                            <li><p class="dropdown-item text-warning" th:text="${session.customer.userName}"></p></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
@@ -86,7 +86,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-md-3 text-end" th:if="${session.username == null}">
+                <div class="col-md-3 text-end" th:if="${customer == null}">
                     <a th:href="@{/login}"
                        class="btn btn-outline-dark me-2">
                         Login
@@ -106,8 +106,8 @@
         <div class="col-md-5 p-lg-5 mx-auto my-5">
             <h1 class="display-4 fw-normal">Ray Shop</h1>
             <p class="lead fw-normal">Provide anything you need</p>
-            <a class="btn btn-outline-warning" th:if="${session.username == null}" th:href="@{/register}">Sign up now</a>
-            <a class="btn btn-outline-warning" th:if="${session.username != null}" th:href="@{/products}">Explore now</a>
+            <a class="btn btn-outline-warning" th:if="${customer == null}" th:href="@{/register}">Sign up now</a>
+            <a class="btn btn-outline-warning" th:if="${customer}" th:href="@{/products/0}">Explore now</a>
         </div>
         <div class="product-device shadow-sm d-none d-md-block"></div>
         <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
