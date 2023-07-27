@@ -39,15 +39,10 @@ public class ProductController {
         this.customerService = theCustomerService;
     }
 
-    @RequestMapping("/products/{pageNo}")
+    @RequestMapping("/products/asc/{pageNo}")
     public String products(@PathVariable("pageNo") int pageNo, Model model, Principal principal) {
-        if (principal != null) {
-            String username = principal.getName();
-            Customer customer = customerService.findByUserName(username);
-            model.addAttribute("customer", customer);
-        }
+        checkPrincipal(principal, model);
 
-//        List<Product> products = productService.findAllByIsActivated();
         Page<Product> products = productService.pageProduct(pageNo);
 
         List<Product> productList = products.getContent();
@@ -59,17 +54,34 @@ public class ProductController {
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("products", productList);
         model.addAttribute("categories", categories);
+        model.addAttribute("sort", "asc");
+
+        return "products";
+    }
+
+    @RequestMapping("/products/desc/{pageNo}")
+    public String sortProductsDesc(@PathVariable("pageNo") int pageNo, Model model, Principal principal) {
+        checkPrincipal(principal, model);
+
+        Page<Product> products = productService.pageProductDesending(pageNo);
+
+        List<Product> productList = products.getContent();
+        List<Category> categories = categoryService.findAllByIsActivated();
+
+        model.addAttribute("title", "Products");
+        model.addAttribute("size", products.getTotalElements());
+        model.addAttribute("totalPages", products.getTotalPages());
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("products", productList);
+        model.addAttribute("categories", categories);
+        model.addAttribute("sort", "desc");
 
         return "products";
     }
 
     @GetMapping("/product-detail")
     public String productDetail(@RequestParam("productId") Long id, Model model, Principal principal) {
-        if (principal != null) {
-            String username = principal.getName();
-            Customer customer = customerService.findByUserName(username);
-            model.addAttribute("customer", customer);
-        }
+        checkPrincipal(principal, model);
 
         Product product = productService.findById(id);
 
@@ -84,11 +96,8 @@ public class ProductController {
 
     @GetMapping("/product-category")
     public String productsByCategory(@RequestParam("categoryId") Long id, Model model, Principal principal) {
-        if (principal != null) {
-            String username = principal.getName();
-            Customer customer = customerService.findByUserName(username);
-            model.addAttribute("customer", customer);
-        }
+
+        checkPrincipal(principal, model);
 
         Category category = categoryService.findById(id);
 
@@ -101,5 +110,33 @@ public class ProductController {
         model.addAttribute("category",category);
 
         return "search-result";
+    }
+
+    @GetMapping("/search-result/{pageNo}")
+    public String searchProduct(@PathVariable("pageNo") int pageNo,
+                                @RequestParam("keyword") String keyword,
+                                Model model) {
+        Page<Product> products = productService.searchProduct(pageNo, keyword);
+
+        List<Product> result = products.getContent();
+        List<Category> categories = categoryService.findAllByIsActivated();
+
+        model.addAttribute("title", "Products");
+        model.addAttribute("size", products.getTotalElements());
+        model.addAttribute("totalPages", products.getTotalPages());
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("products", result);
+        model.addAttribute("categories", categories);
+        model.addAttribute("sort", "desc");
+
+        return "products";
+    }
+
+    private void checkPrincipal(Principal principal, Model model) {
+        if (principal != null) {
+            String username = principal.getName();
+            Customer customer = customerService.findByUserName(username);
+            model.addAttribute("customer", customer);
+        }
     }
 }

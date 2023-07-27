@@ -14,7 +14,7 @@
             <div class="col-10">
 
                 <div class="mb-4 text-center">
-                    <h3 class="fw-normal mb-0 text-black">Your orders</h3>
+                    <h3 class="fw-normal mb-0 text-black" th:if="${size > 0}">Your orders</h3>
                 </div>
 
                 <div class="card mb-5" th:each="order : ${orderList}" th:if="${size > 0}">
@@ -71,7 +71,15 @@
                             </div>
                         </div>
                     </form>
-                    <!-- End Add Modal -->
+                </div>
+
+                <div class="mb-5" th:if="${size == 0}">
+                    <div class="d-flex text-center mb-5">
+                        <h5 class="">Your order is empty</h5>
+                    </div>
+                    <div class="text-body-secondary ">
+                        <a class="btn btn-outline-warning text-dark" th:href="@{/products/0}">Continue shopping</a>
+                    </div>
                 </div>
             </div>
         </div>

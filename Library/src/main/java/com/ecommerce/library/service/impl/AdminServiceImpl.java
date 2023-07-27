@@ -7,6 +7,7 @@ import com.ecommerce.library.repository.AdminRepository;
 import com.ecommerce.library.repository.RoleRepository;
 import com.ecommerce.library.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

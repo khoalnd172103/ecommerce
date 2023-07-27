@@ -16,11 +16,16 @@
             <div class="container px-4 px-lg-5 mt-5">
                 <div class="d-flex justify-content-end  mb-5">
                     <div class="col-2">
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected>Filter price</option>
-                            <option value="1">High to low</option>
-                            <option value="2">Low to high</option>
-                        </select>
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">Sorting</a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" th:href="@{/products/desc/0}">High to low</a></li>
+                                    <li><a class="dropdown-item" th:href="@{/products/asc/0}">Low to high</a></li>
+                                </ul>
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-3">
@@ -52,7 +57,7 @@
                 <nav aria-label="Page navigation example">
                     <ul class="pagination d-flex justify-content-center">
                         <li class="page-item" th:if="${currentPage != 0}">
-                            <a th:href="@{'/products/' + ${currentPage - 1}}"
+                            <a th:href="@{'/products/' + ${sort} + '/'+ ${currentPage - 1}}"
                                class="page-link" href="#" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                                 <span class="sr-only">Previous</span>
@@ -60,12 +65,12 @@
                         </li>
                         <li th:each="i: ${#numbers.sequence(1, totalPages)}"
                             th:class="${currentPage == i - 1} ? 'page-item active' : 'page-item'">
-                            <a th:href="@{'/products/' + ${i - 1}}"
+                            <a th:href="@{'/products/' + ${sort} + '/' + ${i - 1}}"
                                class="page-link" href="#"><span th:text="${i}"></span></a>
                         </li>
                         <li th:if="${currentPage + 1 != totalPages}"
                             class="page-item">
-                            <a th:href="@{'/products/' + ${currentPage + 1}}"
+                            <a th:href="@{'/products/' + ${sort} + '/' + ${currentPage + 1}}"
                                class="page-link" href="#" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                                 <span class="sr-only">Next</span>

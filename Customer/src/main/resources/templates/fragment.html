@@ -34,7 +34,7 @@
                             <a class="nav-link dropdown-toggle" href="#" role="button"
                                data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" th:href="@{/products/0}">All Products</a></li>
+                                <li><a class="dropdown-item" th:href="@{/products/asc/0}">All Products</a></li>
                                 <li>
                                     <hr class="dropdown-divider"/>
                                 </li>
@@ -45,10 +45,10 @@
                     </ul>
                 </div>
                 <div class="col-md-6">
-                    <form class="input-group">
+                    <form class="input-group" th:action="@{/search-result/0}" method="get">
                         <input type="text" class="form-control" placeholder="Search" aria-label="+"
-                               aria-describedby="button-addon2">
-                        <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
+                               aria-describedby="button-addon2" name="keyword">
+                        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
                     </form>
                 </div>
                 <div class="col-md-2" th:if="${customer}">
@@ -64,17 +64,17 @@
                     <div class="dropdown text-center">
                         <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1"
                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <img th:src="@{/{fileName}(fileName=${session.customer.image})}" alt="mdo" width="32" height="32"
+                            <img th:src="@{/{fileName}(fileName=${customer.image})}" alt="mdo" width="32" height="32"
                                  class="rounded-circle">
                         </a>
                         <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                            <li><p class="dropdown-item text-warning" th:text="${session.customer.userName}"></p></li>
+                            <li><p class="dropdown-item text-warning" th:text="${customer.userName}"></p></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
                             <li><a class="dropdown-item" href="#">Settings</a></li>
-                            <li><a class="dropdown-item" th:href="@{order}">My Orders</a></li>
-                            <li><a class="dropdown-item" th:href="@{account-home}">Profile</a></li>
+                            <li><a class="dropdown-item" th:href="@{/order}">My Orders</a></li>
+                            <li><a class="dropdown-item" th:href="@{/account-home}">Profile</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
@@ -107,7 +107,7 @@
             <h1 class="display-4 fw-normal">Ray Shop</h1>
             <p class="lead fw-normal">Provide anything you need</p>
             <a class="btn btn-outline-warning" th:if="${customer == null}" th:href="@{/register}">Sign up now</a>
-            <a class="btn btn-outline-warning" th:if="${customer}" th:href="@{/products/0}">Explore now</a>
+            <a class="btn btn-outline-warning" th:if="${customer}" th:href="@{/products/ascending/0}">Explore now</a>
         </div>
         <div class="product-device shadow-sm d-none d-md-block"></div>
         <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
@@ -128,9 +128,9 @@
     <!--    <footer class="py-5 bg-dark">-->
     <!--        <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>-->
     <!--    </footer>-->
-    <div class="text-bg-dark">
+    <footer class="text-bg-dark bottom-0">
         <div class="container">
-            <footer class="py-3">
+            <div class="py-3">
                 <ul class="nav justify-content-center border-bottom pb-3 mb-3">
                     <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Home</a></li>
                     <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Features</a></li>
@@ -139,9 +139,9 @@
                     <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">About</a></li>
                 </ul>
                 <p class="text-center text-body-secondary">&copy; 2023 Company, Inc</p>
-            </footer>
+            </div>
         </div>
-    </div>
+    </footer>
 </div>
 
 <div th:fragment="script">

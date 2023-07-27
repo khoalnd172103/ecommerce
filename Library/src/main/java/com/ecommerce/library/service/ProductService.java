@@ -19,6 +19,8 @@ public interface ProductService {
 
     Page<Product> pageProduct(int pageNo);
 
+    Page<Product> pageProductDesending(int pageNo);
+
     Page<Product> searchProduct(int pageNo, String keyword);
 
     List<Product> findAllByIsActivated();

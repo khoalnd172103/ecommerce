@@ -4,6 +4,8 @@ import com.ecommerce.library.dto.CustomerDTO;
 import com.ecommerce.library.model.Customer;
 import com.ecommerce.library.repository.CustomerRepository;
 import com.ecommerce.library.service.CustomerService;
+import com.ecommerce.library.service.MailService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class RegisterController {
@@ -21,8 +24,12 @@ public class RegisterController {
     private CustomerService customerService;
 
     @Autowired
-    public RegisterController(CustomerService theCustomerService) {
+    private MailService mailService;
+
+    @Autowired
+    public RegisterController(CustomerService theCustomerService, MailService theMailService) {
         this.customerService = theCustomerService;
+        this.mailService = theMailService;
     }
 
 
@@ -34,6 +41,14 @@ public class RegisterController {
         model.addAttribute("customerDTO", customerDTO);
 
         return "register";
+    }
+
+    @GetMapping("/suggest")
+    public String suggest(Model model) {
+        model.addAttribute("title", "Suggest");
+        model.addAttribute("message", "It looks like you don't have account, please register.");
+
+        return "suggest";
     }
 
     @PostMapping("/processRegister")
@@ -50,6 +65,7 @@ public class RegisterController {
         //check exist
         if (customer != null) {
             model.addAttribute("customerDTO", customerDTO);
+            model.addAttribute("title", "Registration");
             model.addAttribute("registrationError", "User name is already registered.");
             return "register";
         }
@@ -57,14 +73,18 @@ public class RegisterController {
         //check repeat password
         if(!customerDTO.getPassword().equals(customerDTO.getRepeatPassword())) {
             model.addAttribute("customerDTO", customerDTO);
+            model.addAttribute("title", "Registration");
             model.addAttribute("registrationError", "Incorrect repeat password");
             return "register";
         }
 
         customer = customerService.save(customerDTO);
 
+        mailService.sendMailCreateCustomer(customerDTO);
+
         System.out.println("Create new customer successfully");
 
+        model.addAttribute("title", "Registration");
         model.addAttribute("registrationSuccess", "Register successfully");
 
         return "register";

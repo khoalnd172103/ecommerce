@@ -10,6 +10,7 @@ import com.ecommerce.library.service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.AuthenticatedPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -50,10 +51,12 @@ public class HomeController {
         List<Product> products = productService.findAllByIsActivated();
         List<Category> categories = categoryService.findAllByIsActivated();
 
-        String username = "";
-        Customer customer = null;
+        Customer customer = (Customer) session.getAttribute("customer");
 
-        if (principal != null) {
+        String username = "";
+        //Customer customer = null;
+
+        if (principal != null && customer != null) {
             username = principal.getName();
             customer = customerService.findByUserName(username);
             model.addAttribute("customer", customer);

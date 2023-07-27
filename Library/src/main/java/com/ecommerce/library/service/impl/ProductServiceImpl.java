@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -130,13 +131,19 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<Product> pageProduct(int pageNo) {
-        Pageable pageable = PageRequest.of(pageNo, 9);
+        Pageable pageable = PageRequest.of(pageNo, 9, Sort.by("costPrice").ascending());
+        return productRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Product> pageProductDesending(int pageNo) {
+        Pageable pageable = PageRequest.of(pageNo, 9, Sort.by("costPrice").descending());
         return productRepository.findAll(pageable);
     }
 
     @Override
     public Page<Product> searchProduct(int pageNo, String keyword) {
-        Pageable pageable = PageRequest.of(pageNo, 9);
+        Pageable pageable = PageRequest.of(pageNo, 9, Sort.by("costPrice"));
         Page<Product> result = productRepository.searchProduct(keyword, pageable);
         return result;
     }

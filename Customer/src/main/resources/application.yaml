@@ -1,0 +1,27 @@
+spring:
+  mail:
+    default-encoding: UTF-8
+    host: smtp.gmail.com
+    port: 587
+    username: khoaly090141@gmail.com
+    password: rpmrswkoqebgfoxo
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+        debug: true
+    test-connection: false
+    protocol: smtp
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 923542838948-88eah9bkj0nsi7mej2ro8s30ue52u8hv.apps.googleusercontent.com
+            clientSecret: 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
+            scope:
+              - email
+              - profile
